@@ -1,21 +1,17 @@
 <?php
-// Connect to the database
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "pizza";
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
-// Check connection
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Get the latest 5 menu items from the menu table
 $sql = "SELECT * FROM menu ORDER BY id DESC LIMIT 5";
 $result = mysqli_query($conn, $sql);
 
-// Create the data array for the chart
 $data = array(
     array('Menu Item', 'Number of Orders')
 );
@@ -46,13 +42,10 @@ while ($row = mysqli_fetch_assoc($result)) {
     }
 }
 
-// Sort the data array by the second column in descending order
 array_multisort(array_column($data, 1), SORT_DESC, $data);
 
-// Close the database connection
 mysqli_close($conn);
 
-// Encode the data array as JSON
 $jsonData = json_encode($data);
 ?>
 
@@ -79,7 +72,6 @@ $jsonData = json_encode($data);
 			chart.draw(data, options);
 		}
 
-		// Refresh the chart every 5 seconds
 		setInterval(function() {
 			drawChart();
 		}, 5000);
